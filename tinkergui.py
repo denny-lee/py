@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # _*_ coding: utf-8
-from Tkinter import *
+from tkinter import *
 
 class Application(Frame):
     def __init__(self, master=None):
