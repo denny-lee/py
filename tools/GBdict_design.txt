@@ -1,0 +1,33 @@
+about search tools:
+
+use memory cache
+persist into file when close the program
+
+------------------------
+UI - Boundary:
+Search:
+Input:1
+search triggered on key release
+
+Text area:1
+info
+
+Add/Delete:
+
+------------------------
+data type | format	|	result
+pbrun command	|	pb {hostname}	|	pbrun -u monitor -h {hostname} firecloudvm
+properties		|	{instance} [env]	|	L1:properties url	L2:visit url if any
+password		|	pw					|	user \t pass (each a line)
+controller		|	url {url}			|	controller file name
+code			|	code {instance} [env]	|	code git branch file
+
+------------------------
+Language Python
+
+
+
+
+
+
+

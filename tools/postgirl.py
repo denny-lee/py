@@ -8,13 +8,19 @@ from tkinter import font
 class Application(ttk.Panedwindow):
     def __init__(self, master=None):
         # self.mainTitleFont = font.Font(family='Helvetica', size=18, weight='bold')
-        ttk.Panedwindow.__init__(self, master, orient=VERTICAL)
+        pw=ttk.Panedwindow.__init__(self, master, orient=VERTICAL, width=800)
         self.pack()
-        self.f1 = ttk.Labelframe(self, text='Request', width=200)
-        self.f2 = ttk.Notebook(self)
-        self.f3 = ttk.Labelframe(self, text='Response', width=200)
+        self.f0 = ttk.Labelframe(self, text='')
+        self.f1 = ttk.Labelframe(self, text='Request')
+        self.f2 = ttk.Notebook(self.f1)
+        self.f3 = ttk.Labelframe(self, text='Response')
+        self.f1.grid_rowconfigure(0, weight=1)
+        self.f3.grid_rowconfigure(0, weight=1)
+        self.f1.grid_columnconfigure(0, weight=1)
+        self.f3.grid_columnconfigure(0, weight=1)
+        self.add(self.f0)
         self.add(self.f1)
-        self.add(self.f2)
+        # self.add(self.f2)
         self.add(self.f3)
         self.url = StringVar()
         self.method = StringVar()
@@ -29,39 +35,44 @@ class Application(ttk.Panedwindow):
         self.createWidgets()
 
     def createWidgets(self):
-        Label(self.f1, text='Post Girlie', font=font.Font(size=14, weight='bold')).grid(column=0,row=0,columnspan=3)
-        Radiobutton(self.f1, text='Inner', variable=self.netType, value='Inner').grid(column=0,row=1)
-        Radiobutton(self.f1, text='Outer', variable=self.netType, value='Outer').grid(column=1,row=1)
-        self.netType.set('Inner')
-        Label(self.f1, text='Method:').grid(column=0,row=2)
+        Label(self.f0, text='Post Girl', font=font.Font(size=14, weight='bold')).pack()
+
+        Label(self.f1, text='Method:').grid(column=0, row=0)
         cbb = ttk.Combobox(self.f1, textvariable=self.method, width=15)
-        cbb.grid(column=1,row=2)
+        cbb.grid(column=1, row=0, sticky="w")
         cbb['values'] = ('GET', 'POST', 'PUT', 'DELETE')
         cbb.bind('<<ComboboxSelected>>', self.onchange)
         self.method.set('POST')
-        Label(self.f1, text='Url:').grid(column=0,row=3)
-        Entry(self.f1, textvariable=self.url, width=50).grid(column=1, row=3, columnspan=2)
+        Radiobutton(self.f1, text='Inner', width=20, foreground='gray', font=font.Font(weight='bold'), variable=self.netType, value='Inner').grid(column=2,row=0)
+        Radiobutton(self.f1, text='Outer', width=20, foreground='blue', font=font.Font(weight='bold'), variable=self.netType, value='Outer').grid(column=3,row=0)
+        self.netType.set('Inner')
+
+        Label(self.f1, text='Url:').grid(column=0, row=1)
+        Entry(self.f1, textvariable=self.url, width=80).grid(column=1, row=1, columnspan=3, sticky="w")
         self.url.set('localhost:8080/biz')
 
-        Button(self.f1, text='Go', foreground='green', width=4, font=font.Font(size=18, weight='bold'), command=self.doit).grid(column=2,row=1,rowspan=2, sticky=(N, S, W, E))
+        Button(self.f1, text='Go', foreground='green', width=8, font=font.Font(size=18, weight='bold'), command=self.doit).grid(column=4,row=0,rowspan=2, sticky=(N, S, W, E))
 
         # Child Frame for request params
         nHeader = Frame(self.f2)
         nBody = Frame(self.f2)
         self.f2.add(nHeader, text='Headers')
         self.f2.add(nBody, text='Body')
-        self.reqHeader = Text(nHeader, width=40, height=10)
+        self.reqHeader = Text(nHeader, width=95, height=10)
         self.reqHeader.grid(column=0, row=0, columnspan=3)
 
-        self.reqBody = Text(nBody, width=40, height=10)
+        self.reqBody = Text(nBody, width=95, height=10)
         Radiobutton(nBody, text='text', variable=self.dataType, value='text', command=self.toggle).grid(column=0, row=0)
         Radiobutton(nBody, text='json', variable=self.dataType, value='json', command=self.toggle).grid(column=1, row=0)
-        Radiobutton(nBody, text='form', variable=self.dataType, value='form', command=self.toggle).grid(column=2, row=0)
+        Radiobutton(nBody, text='xml', variable=self.dataType, value='xml', command=self.toggle).grid(column=2, row=0)
+        Radiobutton(nBody, text='form', variable=self.dataType, value='form', command=self.toggle).grid(column=3, row=0)
         self.dataType.set('json')
-        self.reqBody.grid(column=0, row=1, columnspan=3)
+        self.reqBody.grid(column=0, row=1, columnspan=4)
         sbar1 = Scrollbar(nBody,orient=VERTICAL, command=self.reqBody.yview)
         sbar1.grid(column=4, row=1,sticky=(N,S))
         self.reqBody.config(yscrollcommand=sbar1.set)
+        self.reqBody.insert(END, '{}')
+        self.f2.grid(column=0, row=2, columnspan=5)
 
 
         # Child Frame for response.
@@ -69,10 +80,10 @@ class Application(ttk.Panedwindow):
         self.statusBar.grid(column=0, row=0)
         Label(self.f3, text='Status:').grid(column=1, row=0)
         Entry(self.f3, textvariable=self.respStatus).grid(column=2, row=0)
-        self.respContent = Text(self.f3, width=40, height=10)
+        self.respContent = Text(self.f3, width=95, height=10)
         self.respContent.grid(column=0, row=1, columnspan=3)
         sbar2 = Scrollbar(self.f3, orient=VERTICAL, command=self.respContent.yview)
-        sbar2.grid(column=4, row=1, sticky=(N, S))
+        sbar2.grid(column=3, row=1, sticky=(N, S))
         self.respContent.config(yscrollcommand=sbar2.set)
 
     def onchange(self, event):
@@ -108,6 +119,8 @@ class Application(ttk.Panedwindow):
         text = self.reqHeader.get(1.0, END)
         if '\r\n' in text:
             hArr = text.split('\r\n')
+        elif '\n' in text:
+            hArr = text.split('\n')
         elif len(text) > 0:
             hArr = [text]
         else:
@@ -123,6 +136,8 @@ class Application(ttk.Panedwindow):
         if not headers.get('Content-Type') and not headers.get('Content-type') and not headers.get('content-type'):
             if dataType == 'json':
                 headers['Content-Type'] = 'application/json;charset=UTF-8'
+            elif dataType == 'xml':
+                headers['Content-Type'] = 'application/xml;charset=UTF-8'
             elif dataType == 'form':
                 headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
             else:
@@ -167,6 +182,6 @@ class Application(ttk.Panedwindow):
 
 app = Application()
 # 设置窗口标题:
-app.master.title('Hello World')
+app.master.title('Post Girl')
 # 主消息循环:
 app.mainloop()
