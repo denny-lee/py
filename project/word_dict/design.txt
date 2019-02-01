@@ -1,0 +1,60 @@
+web app:
+IndexPage:
+
+Change Languages:
+Languages: [Drop down]
+
+
+--------------------
+
+
+Add/Update: Pk by Phrase. 
+
+-------Required-----
+Phrase:	[unfocus trigger seach by pk. Hint if exists. fill the other info to each input]	Trans:		Subject: [Drop down]
+-------Not Required-----
+Synonym: seperated by comma		List all if any
+similar spelling: seperated by comma		List all if any
+Tag:		
+Example:
+--------------------
+Search
+
+
+--------------------
+
+Add / Remove / List Subject
+
+Subject:		Press Enter = submit
+
+List			Minus in each line . click to remove
+
+---------------------
+Total:
+Pie chart show each subject phrase count.
+Button: click to refresh
+
+
+
+------------DB Design-------------
+
+Collections: 
+Phrase coll:
+	naming: start with "lang_"
+	example: lang_eng
+subject coll
+	
+
+one Collection for each languages
+
+keys of lang_eng
+expr, expr_type, phonetic_symbol, trans, subject (R), branch, synonym: array of Ref, similar_spelling: array of Ref, tag, example, search_count: int, created_at, updated_at
+
+keys of subject
+eng_name
+
+Technical choise:
+Python Django + jQuery
+
+
+
