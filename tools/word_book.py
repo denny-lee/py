@@ -9,9 +9,11 @@ HELP = ('?', 'h')
 Q = ('q', 'Q')
 ADD = 'i '
 SEARCH = 'f '
+changeColl = 'c'
 showDb = ('db', 'DB')
 help_doc = 'Usage:\n--------------------Cmd--------------------\n' \
-           'i {data seperated with comma}\n' \
+           'c [collection]      if null param then show coll\n' \
+           'i {data seperated with comma. Column: phrase/word,chinese,tag}\n' \
            'f {key:value pair seperated with comma}\n' \
            'db  show current db\n' \
            '? or h for HELP\n' \
@@ -24,6 +26,7 @@ class DbWorker:
     client = None
     db = None
     currdb = ''
+    currColl = ''
 
     def __init__(self, url):
         self.client = pymongo.MongoClient(url)
@@ -37,6 +40,12 @@ class DbWorker:
 
     def showDb(self):
         print(self.currdb)
+
+    def useColl(self, coll):
+        self.currColl = coll
+
+    def showColl(self):
+        print(self.currColl)
 
     def _save(self, coll, data):
         self.db[coll].insert_one(data)
@@ -60,9 +69,16 @@ class DbWorker:
         if c in HELP:
             print(help_doc)
         elif c.startswith(ADD):
-            print('add things')
+            data = getJsonData(c[len(ADD):])
+            self.save(self.currColl, data)
         elif c.startswith(SEARCH):
-            self.
+            data = getJsonData(c[len(SEARCH):])
+            self.search(self.currColl, data)
+        elif c.startswith(changeColl):
+            if c == changeColl:
+                self.showColl()
+            else:
+                self.useColl(c[2:])
         elif c == 'cls':
             os.system(c)
 

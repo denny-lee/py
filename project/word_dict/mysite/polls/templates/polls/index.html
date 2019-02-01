@@ -1,0 +1,112 @@
+{% load static %}
+
+<link type="text/css" rel="stylesheet" href="{% static 'polls/style.css' %}" />
+<script type="text/javascript" src="{% static 'polls/jquery-1.7.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'polls/index.js' %}"></script>
+
+<div>
+    <div class="header">
+        <div class="title"><h1>Word Book</h1></div>
+        <div class="to_right">
+            <span>Change Language:</span>
+            <select name="lang" id="lang">
+                <option value="English">English</option>
+            </select>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <hr/>
+    <div class="main_container">
+        <div class="title"><h3>Add / Update a Phrase</h3></div>
+        <div class="content req_form">
+            <div class="grid_3">
+                <span>Phrase:</span>
+                <input type="text" name="expr" id="expr" />
+                <span id="expr_exist" class="remove hint">exsist icon</span>
+            </div>
+            <div class="grid_3">
+                <span>translation:</span>
+                <input type="text" name="trans" id="trans">
+            </div>
+            <div class="grid_3">
+                <span>Subject:</span>
+                {% if subjects %}
+                <select name="subject" id="subject">
+                    {% for sbj in subjects %}
+                        <option value="{{ sbj.eng_name }}">{{ sbj.eng_name }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="content no_req_form">
+            <div class="grid_3">
+                <span>Tag:</span>
+                <input type="text" name="tag" id="tag" />
+            </div>
+            <div class="grid_3">
+                <span>Synonym:</span>
+                <input type="text" id="synonym" />
+            </div>
+            <div class="grid_3">
+                <span>Similar_spelling:</span>
+                <input type="text" id="similar_spelling">
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="content no_req_form">
+            <div class="grid_1">
+                <span class="short_fix">Example:</span>
+                <textarea name="example" id="example" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="content no_req_form">
+            <div class="grid_2">
+                <div id="synonym_list"></div>
+            </div>
+            <div class="grid_2">
+                <div id="similar_spelling_list"></div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+        <div class="grid_1">
+            <span class="short_fix"></span>
+            <button id="save_btn">Submit</button>
+        </div>
+        <div class="clear"></div>
+        <hr />
+        <div class="content req_form">
+            <input type="text" name="search" id="search" />
+            <button id="search_btn">Search</button>
+        </div>
+        <div class="result" id="search_result"></div>
+    </div>
+
+    <div class="clear"></div>
+    <hr />
+    <div class="main_container">
+        <div class="title"><h3>Manage Subject</h3></div>
+        <div class="content req_form">
+            <span>Subject Name:</span>
+            <input type="text" id="subject_name" />
+            <button id="sbj_save_btn">Submit</button>
+        </div>
+        <div id="sbj_list"></div>
+
+        <div class="clear"></div>
+        <hr />
+        <div>
+            <span>Total phrase count:</span>
+            {% if totalCount %}
+            <span>{{ totalCount }}</span>
+            {% else %}
+            <span>0</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="token">{% csrf_token %}</div>
+</div>
+

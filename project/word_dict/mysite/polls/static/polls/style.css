@@ -1,0 +1,131 @@
+body {
+    background-color: #e2e2e2;
+    font-family: Arial, Helvetica, sans-serif;
+}
+button {
+    padding: 2px;
+    background-color: #9dceec;
+    border-radius: 4px;
+
+}
+button:hover {
+    box-shadow: 0 1px 9px 0 rgba(0,0,0,0.2), 0 3px 9px 0 rgba(0,0,0,0.19);
+}
+.header {
+    margin: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+.header .title{
+    text-align: center;
+}
+.to_right {
+    float: right;
+}
+.main_container {
+    margin: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+.main_container .title{
+    text-align: center;
+}
+.main_container .content {
+    margin: 0 auto;
+}
+.main_container .content div {
+    float: left;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+.main_container .req_form {
+
+}
+.main_container .grid_3 {
+    padding: 5px;
+    width: 32%;
+}
+.main_container .grid_3 span {
+    display: inline-block;
+    width: 22%;
+}
+.main_container .grid_3 input {
+    width: 60%;
+}
+.main_container .grid_3 span.hint {
+    display: inline-block;
+    width: 12%;
+}
+.main_container .grid_2 {
+    width: 48%;
+}
+.main_container .grid_2 span {
+    display: inline-block;
+    width: 22%;
+}
+.main_container .grid_2 input {
+    width: 60%;
+}
+.main_container .grid_1 {
+    width: 98%;
+}
+.main_container .grid_1 span {
+    display: inline-block;
+    width: 22%;
+}
+.main_container .grid_1 span.short_fix {
+    display: inline-block;
+    width: 128px;
+}
+.main_container .grid_1 input {
+    width: 60%;
+}
+.main_container .grid_1 textarea {
+    vertical-align: middle;
+    width: 60%;
+}
+ul.data_list {
+    list-style-type: none;
+    padding-left: 0;
+    display: inline-block;
+}
+ul.data_list li {
+    padding: 2px 0;
+    border-top: solid;
+    border-width: 1px;
+    border-color: black;
+}
+ul.data_list:last-child {
+    border-bottom: solid;
+    border-width: 2px;
+}
+ul.data_list li.head_row {
+    border-top-width: 2px;
+}
+ul.data_list li span {
+    display: inline-block !important;
+    width: 200px !important;
+    padding-left: 10px;
+    border-left: solid;
+    border-right: solid;
+    border-width: 1px;
+    border-color: black;
+}
+ul.data_list li.head_row span {
+    font-weight: bold;
+    color: #346fbb;
+}
+ul.data_list li span.long_txt {
+    width: 450px;
+}
+.clear {
+    clear: both;
+}
+span.remove {
+    color: red;
+    cursor: pointer;
+}
+span.edit {
+    color: blue;
+    cursor: pointer;
+}

@@ -33,7 +33,7 @@ help_doc = 'Usage:\n--------------------Search Cmd--------------------\n' \
            'q or Q for Quit\n' \
            '---------------------------------------------------\n\n'
 pw_doc = ''
-diamond = '404212200212220204220496288388464464420404432416488164160192212496496404212224224192216204496168336476416488416488196196212212'
+diamond = '404212200212220204220496288388464464420404432416488196196256152496496404212224224192216204496168336476416488416488196196212212'
 code_version_url = 'http://esp-%s-code.statestr.com:5506/%s/code/artifactory_version.txt'
 property_url = 'http://esp-%s-code.statestr.com:5506/%s/resources/helium.properties'
 property_url_1 = 'http://gdcul1908.statestr.com:81/%s/resources/helium.properties'
