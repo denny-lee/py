@@ -1,5 +1,6 @@
 {% load static %}
 
+<link rel="shortcut icon" href="{% static 'polls/favicon.png' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'polls/style.css' %}" />
 <script type="text/javascript" src="{% static 'polls/jquery-1.7.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'polls/index.js' %}"></script>
@@ -82,6 +83,54 @@
             <button id="search_btn">Search</button>
         </div>
         <div class="result" id="search_result"></div>
+    </div>
+
+    <div class="clear"></div>
+    <hr />
+    <div class="main_container">
+        <div class="title"><h3>Useful Expression</h3></div>
+        <div class="content req_form">
+            <div class="grid_2">
+                <span>Expression:</span>
+                <input type="text" name="expr" id="long_expr" />
+            </div>
+            <div class="grid_2">
+                <span>translation:</span>
+                <input type="text" name="trans" id="long_trans">
+            </div>
+        </div>
+
+        <div class="clear"></div>
+        <div class="content no_req_form">
+            <div class="grid_2">
+                <span>tag:</span>
+                <input type="text" name="tag" id="long_tag" />
+            </div>
+            <div class="grid_2">
+                <span>Subject:</span>
+                {% if subjects %}
+                <select name="subject" id="long_subject">
+                    {% for sbj in subjects %}
+                        <option value="{{ sbj.eng_name }}">{{ sbj.eng_name }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="clear"></div>
+        <div class="grid_1">
+            <span class="short_fix"></span>
+            <button id="save_expr_btn">Submit</button>
+        </div>
+
+        <div class="clear"></div>
+        <hr />
+        <div class="content req_form">
+            <input type="text" name="search" id="long_search" />
+            <button id="long_search_btn">Search</button>
+        </div>
+        <div class="result" id="long_search_result"></div>
     </div>
 
     <div class="clear"></div>

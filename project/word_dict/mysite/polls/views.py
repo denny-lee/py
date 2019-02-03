@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import EngBook
 from .models import Subject
+from .models import UsefulExpr
 from .daos import BaseDao
 import re
 from bson.json_util import dumps
@@ -16,7 +17,7 @@ def index(request):
     subjects = BaseDao().find_all(Subject().get_coll())
     count = BaseDao().count(EngBook().get_coll())
     ctx = {
-        'subjects': subjects,
+        'subjects': list(subjects),
         'totalCount': count
     }
     return render(request, 'polls/index.html', ctx)
@@ -50,6 +51,23 @@ def save(request):
     return HttpResponse('error')
 
 
+def save_expr(request):
+    expr = request.POST['long_expr']
+    trans = request.POST['long_trans']
+    subject = request.POST['long_subject']
+    tag = request.POST['long_tag']   # comma split
+    tag = trim_dedup(tag)
+
+    obj = UsefulExpr(expr, trans, subject, tag)
+    if not obj.checkRequired():
+        return HttpResponse('error')
+
+    if BaseDao().save(obj):
+        return HttpResponse("ok")
+
+    return HttpResponse('error')
+
+
 def find(request):
     oid = request.POST['id']
     if not oid:
@@ -77,11 +95,28 @@ def search(request):
     return JsonResponse(jsonstr, safe=False)
 
 
+def search_expr(request):
+    expr = request.POST['keyword']
+    regx = re.compile("(^|\W)"+expr+"(\W|$)", re.IGNORECASE)
+    coll = BaseDao().search(UsefulExpr().get_coll(), {'expr': {'$regex': regx}})
+    jsonstr = dumps(coll)
+    return JsonResponse(jsonstr, safe=False)
+
+
 def remove(request):
     id = request.POST['id']
     if not id:
         return HttpResponse("error")
     if BaseDao().remove_one(EngBook().get_coll(), {'_id': ObjectId(id)}):
+        return HttpResponse('ok')
+    return HttpResponse('error')
+
+
+def remove_expr(request):
+    id = request.POST['id']
+    if not id:
+        return HttpResponse("error")
+    if BaseDao().remove_one(UsefulExpr().get_coll(), {'_id': ObjectId(id)}):
         return HttpResponse('ok')
     return HttpResponse('error')
 

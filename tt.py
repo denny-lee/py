@@ -15,5 +15,14 @@
 # 	fw.write(data)
 # fo.close()
 # fw.close()
-tt="aab"
-print(tt.index('b'))
+import re
+
+import hashlib
+
+tt="Architecture, like politics, is the art of the possible."
+print(len(re.findall("\w+", tt)))
+
+print(hashlib.algorithms_available)
+print(hashlib.algorithms_guaranteed)
+
+print(tt.encode())

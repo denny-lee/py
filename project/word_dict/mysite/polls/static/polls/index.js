@@ -131,6 +131,10 @@ $(function () {
     }
 
     function bindBtnEvent() {
+        $('#example').keyup(function() {
+            var ov = $(this).val();
+            $(this).val(ov.replace(/\n/g, ' '));
+        });
         $('#save_btn').click(function() {
             var param = {}
             var inputs = ['expr', 'trans', 'subject', 'tag']
@@ -140,7 +144,7 @@ $(function () {
             param['example'] = $('#example').val()
             param['synonym'] = setSSP("synonym", "synonym_list");
             param['similar_spelling'] = setSSP("similar_spelling", "similar_spelling_list");
-            console.log(param)
+//            console.log(param)
             post('save', param, null, function(data) {
                 if (data === 'ok') {
                     resetForm();
@@ -149,6 +153,23 @@ $(function () {
                 }
             } )
         })
+
+        $('#save_expr_btn').click(function() {
+            var param = {}
+            var inputs = ['long_expr', 'long_trans', 'long_subject', 'long_tag']
+            for (var x in inputs) {
+                param[inputs[x]] = $('#'+inputs[x]).val();
+            }
+
+            post('save_expr', param, null, function(data) {
+                if (data === 'ok') {
+                    resetLongForm();
+                } else {
+                    alert('save useful expression fail ')
+                }
+            } )
+        })
+
         $('#search_btn').click(function() {
             $('#search_result').empty();
             var str = $('#search').val()
@@ -161,14 +182,43 @@ $(function () {
                 if (json) {
                     var ul = $('<ul class="data_list"></ul>')
                     ul.append('<li class="head_row"><span>Expression</span><span>Translation</span><span>Tag</span><span class="long_txt">Example</span><span>Subject</span><span>Operation</span></li>')
+                    var tagStr;
+                    var exampleStr;
                     for (var i in json) {
-                        ul.append('<li id="'+json[i]._id['$oid']+'"><span>'+json[i].expr+'</span><span>'+json[i].trans+'</span><span>'+json[i].tag+'</span><span class="long_txt">'+json[i].example+'</span><span>'+json[i].subject+'</span><span class="edit">[E]</span><span class="remove">[X]</span></li>')
+                        tagStr = json[i].tag ? json[i].tag : '';
+                        exampleStr = json[i].example ? json[i].example : '';
+                        ul.append('<li id="'+json[i]._id['$oid']+'"><span>'+json[i].expr+'</span><span>'+json[i].trans+'</span><span>'+tagStr+'</span><span class="long_txt">'+exampleStr+'</span><span>'+json[i].subject+'</span><span class="edit">[E]</span><span class="remove">[X]</span></li>')
                     }
                     $('#search_result').append(ul);
                 }
 
                 registRemoveAction($('#search_result ul li span.remove'))
                 registEditAction($('#search_result ul li span.edit'))
+            })
+        })
+
+        $('#long_search_btn').click(function() {
+            $('#long_search_result').empty();
+            var str = $('#long_search').val()
+            if (!str) {
+                alert('search string should not be empty');
+            }
+            post('search_expr', {'keyword': str}, null, function(data) {
+//                console.log(data)
+                var json = JSON.parse(data)
+                if (json) {
+                    var ul = $('<ul class="data_list"></ul>')
+                    ul.append('<li class="head_row"><span class="long_txt">Expression</span><span class="long_txt">Translation</span><span>Tag</span><span>Subject</span><span>Operation</span></li>')
+                    var tagStr;
+                    var exampleStr;
+                    for (var i in json) {
+                        tagStr = json[i].tag ? json[i].tag : '';
+                        ul.append('<li id="'+json[i]._id['$oid']+'"><span>'+json[i].expr+'</span><span>'+json[i].trans+'</span><span>'+tagStr+'</span><span>'+json[i].subject+'</span><span class="remove">[X]</span></li>')
+                    }
+                    $('#long_search_result').append(ul);
+                }
+
+                registRemoveAction($('#long_search_result ul li span.remove'), 'remove_expr')
             })
         })
 
@@ -216,13 +266,19 @@ $(function () {
     function resetForm() {
         $('#expr').val('')
         $('#trans').val('')
-        $('#subject').val('')
+//        $('#subject').val('')
         $('#tag').val('')
         $('#example').val('')
         $('#synonym').val('')
         $('#similar_spelling').val('')
         $('#synonym_list').empty()
         $('#similar_spelling_list').empty()
+    }
+
+    function resetLongForm() {
+        $('#long_expr').val('')
+        $('#long_trans').val('')
+        $('#long_tag').val('')
     }
 
     function refreshWordList(dom_id, str) {

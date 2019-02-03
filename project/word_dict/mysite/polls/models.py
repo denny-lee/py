@@ -1,5 +1,7 @@
 # from django.db import models
 from datetime import datetime
+import re
+import hashlib
 
 # Create your models here.
 
@@ -98,6 +100,7 @@ class EngBook(BaseModel):
         elif tag is not None:
             self.tag = tag
 
+    @staticmethod
     def remove_dup_str(self, str):
         if str is not None:
             arr = str.split(',')
@@ -108,6 +111,37 @@ class EngBook(BaseModel):
                     arr_n.append(et)
             return ','.join(arr_n)
         return None
+
+
+class UsefulExpr(BaseModel):
+    expr = None     # R     indexed
+    trans = None    # R
+    subject = None
+    tag = None
+    word_count = None
+    hash_code = None
+    lang_flag = 'E'     # E: English, C: chinese
+
+    def __init__(self, expr=None, trans=None, subject=None, tag=None):
+        self.expr = expr
+        self.trans = trans
+        self.subject = subject
+        self.tag = tag
+        if expr is not None:
+            self.word_count = len(re.findall("\w+", expr))
+            self.hash_code = hashlib.sha1(expr.encode()).hexdigest()
+
+    def __str__(self):
+        return "Useful Expression"
+
+    def get_coll(self):
+        return "useful_expr"
+
+    def checkRequired(self):
+        if self.lang_flag == 'E' and not self.expr:
+            return False
+        return True
+
 
 class Subject(BaseModel):
     eng_name = None

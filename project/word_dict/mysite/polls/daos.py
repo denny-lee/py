@@ -31,7 +31,7 @@ class BaseDao:
             print('check failed: %s' % model)
             return False
         try:
-            if vars(model)['_id'] is None:
+            if "_id" not in vars(model):
                 model.set_dates()
                 self.db[model.get_coll()].insert_one(vars(model))
             else:
